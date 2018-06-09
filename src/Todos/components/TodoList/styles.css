@@ -1,0 +1,31 @@
+.todo-list-container {
+    max-width: 400px;
+    margin: 15px auto
+}
+
+.todo-list-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.todo-list-container ul li{
+    list-style-type: none;
+    margin: 10px 0;
+}
+
+.todo-list-new-form {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+}
+
+.no-tasks-container {
+    display: flex;
+    padding: 30px;
+    justify-content: center;
+}

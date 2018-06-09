@@ -1,0 +1,64 @@
+version: 2
+
+default: &default
+  working_directory: ~/app
+  docker:
+    - image: circleci/node:10.3.0
+    - image: docker:18.02.0-ce-git
+
+jobs:
+  build-branch-docker-image:
+    <<: *default
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - run:
+          name: Docker build image
+          command: docker build -t $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH .
+
+      - run:
+          name: Docker push image
+          command: docker push $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
+
+  build-tag-docker-image:
+    <<: *default
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Docker login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - run:
+          name: Docker build image
+          command: docker build -t $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_TAG .
+
+      - run:
+          name: Docker push image
+          command: docker push $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  build-docker-image:
+    jobs:
+      - build-branch-docker-image:
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+            tags:
+              ignore: /.*/
+
+      - build-tag-docker-image:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

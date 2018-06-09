@@ -1,0 +1,27 @@
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    max-width: 400px;
+    margin: auto
+}
+
+.auth-form-loader-container {
+    display: flex;
+    justify-content: center;
+}
+
+.change-auth-type-link {
+    display: flex;
+    justify-content: center;
+}
+
+.change-auth-type-link a {
+    margin: 0 0 0 5px;
+    text-decoration: underline;
+}
+
+.change-auth-type-link a:hover {
+    cursor: pointer;
+}
