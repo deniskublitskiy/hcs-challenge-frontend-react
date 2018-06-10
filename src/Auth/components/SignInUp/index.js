@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
+import pick from 'lodash/pick'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -79,11 +80,13 @@ class SignInUp extends Component {
             return
         }
 
-        this.props.onSubmit(this.state, this.state.isSignIn)
+        const payload = pick(this.state, ['name', 'password'])
 
         this.setState({
             name: '',
             password: '',
+        }, () => {
+            this.props.onSubmit(payload, this.state.isSignIn)
         })
     }
 
