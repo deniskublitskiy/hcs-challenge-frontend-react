@@ -11,6 +11,11 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Input from '@material-ui/core/Input'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 import CreateIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -28,6 +33,7 @@ class TodoList extends Component {
         description: '',
         dueDate: '',
         errors: {},
+        isDeleteAllConfirmationOpen: false,
     }
 
     async componentDidMount() {
@@ -53,7 +59,7 @@ class TodoList extends Component {
         this.props.todoList.deleteTodo(id)
     }
 
-    deleteAllTodos = (id) => {
+    deleteAllTodos = () => {
         this.props.todoList.deleteAllTodos()
     }
 
@@ -108,6 +114,47 @@ class TodoList extends Component {
         this.setState({
             [name]: value,
         }, this.validateDebounced.bind(null, name, value))
+    }
+
+    toggleDeleteAllTodosConfirmation = () => {
+        this.setState(state => ({
+            isDeleteAllConfirmationOpen: !state.isDeleteAllConfirmationOpen,
+        }))
+    }
+
+    handleDeleteAllCancel = () => {
+        this.toggleDeleteAllTodosConfirmation()
+    }
+
+    handleDeleteAllConfirm = () => {
+        this.toggleDeleteAllTodosConfirmation()
+        this.deleteAllTodos()
+    }
+
+    get deleteAllConfirmationDialog() {
+        return <Dialog
+            disableBackdropClick
+            disableEscapeKeyDown
+            maxWidth="xs"
+            open={this.state.isDeleteAllConfirmationOpen}
+        >
+            <DialogTitle>
+                Confirm action
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Are you sure you want to delete all tasks?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={this.handleDeleteAllCancel} variant="contained" color="secondary">
+                    No
+                </Button>
+                <Button onClick={this.handleDeleteAllConfirm} color="primary">
+                    Yes
+                </Button>
+            </DialogActions>
+        </Dialog>
     }
 
     render() {
@@ -174,7 +221,7 @@ class TodoList extends Component {
                             ? <Fragment>
                                 <br />
                                 <Button
-                                    onClick={this.deleteAllTodos}
+                                    onClick={this.toggleDeleteAllTodosConfirmation}
                                     variant="contained"
                                     color="secondary"
                                 >
@@ -193,6 +240,9 @@ class TodoList extends Component {
                         : this.todos
                 }
             </ul>
+            {
+                this.state.isDeleteAllConfirmationOpen && this.deleteAllConfirmationDialog
+            }
         </div>
     }
 }

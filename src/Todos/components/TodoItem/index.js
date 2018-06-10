@@ -15,13 +15,15 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import './styles.css'
+
 const TodoItem = (props) => {
     const { todo } = props
 
     return <Paper elevation={2} component="li">
         <ExpansionPanel defaultExpanded>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body2">
+                <Typography variant="body2" className="todo-title">
                     {todo.title}
                 </Typography>
             </ExpansionPanelSummary>

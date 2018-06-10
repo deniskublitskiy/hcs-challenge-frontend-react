@@ -29,6 +29,11 @@ class UserProfile {
         location.reload()
     }
 
+    async logOutFromAllDevices() {
+        this.dataLayer.logOut()
+        await this.logOut()
+    }
+
     signIn = async (props) => {
         this.isLoading = true
         this.signInErrors = {}

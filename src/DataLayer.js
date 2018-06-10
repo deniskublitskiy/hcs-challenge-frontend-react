@@ -67,6 +67,7 @@ class DataLayer {
     fetchUser = () => this.fetch('user')
     signIn = user => this.post('auth/signin', user)
     signUp = user => this.post('auth/signup', user)
+    logOut = () => this.post('auth/logout')
 }
 
 export default DataLayer
